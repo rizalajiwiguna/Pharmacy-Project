@@ -995,5 +995,7 @@ The inventory dataset cannot reliably support stock-performance decisions until 
 
 ## Author
 **Rizal Aji Wiguna**
+
 Data Analyst Portfolio Project
+
 **Tools:** PostgreSQL · pgAdmin 4 · Google BigQuery · Looker Studio · GitHub
