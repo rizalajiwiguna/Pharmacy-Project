@@ -986,24 +986,15 @@ The inventory dataset cannot reliably support stock-performance decisions until 
 ---
 
 # 12. Project Artifacts
-
-Replace the placeholders below after publishing the final repository and dashboard.
-
 ### Interactive Dashboard
-
-[Looker Studio Dashboard](PASTE_LOOKER_STUDIO_LINK_HERE)
+[Looker Studio Dashboard]((https://datastudio.google.com/reporting/26553675-e866-47cc-8025-376b317c85aa))
 
 ### Case Study Presentation
-
 [PharmaPoint Case Study Presentation](presentation/PharmaPoint_Case_Study_Presentation.pptx)
 
 ### SQL Analysis
-
 [SQL Queries](sql/)
 
-### Technical Documentation
-
-[Technical Documentation](docs/PharmaPoint_Technical_Documentation.docx)
 
 ---
 
