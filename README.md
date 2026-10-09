@@ -968,19 +968,15 @@ Category revenue is largely shaped by:
 - and price mix,
 
 while transaction frequency per SKU remains highly homogeneous.
-
 At product level, revenue is almost perfectly associated with price.
 
 ### Commercial Indicators
-
 Discount and branch rating do not meaningfully explain transaction or sales performance in the available data.
 
 ### Inventory
-
 The inventory dataset cannot reliably support stock-performance decisions until temporal information is added.
 
 ## Final Takeaway
-
 > **Large does not necessarily mean productive. High revenue does not necessarily mean high demand. Good analysis begins by normalizing scale, testing assumptions, and refusing to draw conclusions that the data cannot support.**
 
 ---
@@ -995,13 +991,9 @@ The inventory dataset cannot reliably support stock-performance decisions until 
 ### SQL Analysis
 [SQL Queries](sql/)
 
-
 ---
 
 ## Author
-
 **Rizal Aji Wiguna**
-
 Data Analyst Portfolio Project
-
 **Tools:** PostgreSQL · pgAdmin 4 · Google BigQuery · Looker Studio · GitHub
