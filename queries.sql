@@ -902,7 +902,7 @@ implemented defensibly.
 ----- 1 row = branch + product + snapshot datetime
 */
 
-CREATE TABLE future_inventory_snapshot (
+CREATE TABLE future_inventory (
     branch_id           INTEGER NOT NULL,
     product_id          VARCHAR(20) NOT NULL,
     snapshot_datetime   TIMESTAMP NOT NULL,
