@@ -2,6 +2,8 @@
 PHARMAPOINT — SALES PRODUCTIVITY & PERFORMANCE ANALYSIS
 Author  : Rizal Aji Wiguna
 Purpose : End-to-end SQL analysis for the PharmaPoint portfolio project.
+Primary SQL engine: PostgreSQL  
+Secondary platform: BigQuery (analytical-view replication)  
 
 MAIN ANALYTICAL QUESTION
 How can PharmaPoint distinguish business scale from true performance across
