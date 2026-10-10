@@ -433,7 +433,6 @@ LEFT JOIN `pharmapoint-portfolio.pharmapoint.kantor_cabang` kc
   ON ft.branch_id = kc.branch_id
 LEFT JOIN `pharmapoint-portfolio.pharmapoint.product` p
   ON ft.product_id = p.product_id;
-*/
 
 -- BigQuery validation:
 SELECT
@@ -464,17 +463,14 @@ SELECT
     gross_sales,
     net_sales,
     gross_sales - net_sales AS gross_to_net_discount_value,
-
     total_transactions,
     total_branches,
     total_sku,
-
     net_sales / NULLIF(total_transactions, 0) AS avg_sales_per_transaction,
     net_sales / NULLIF(total_branches, 0) AS net_sales_per_branch,
     total_transactions::numeric / NULLIF(total_branches, 0) AS transactions_per_branch,
     net_sales / NULLIF(total_sku, 0) AS net_sales_per_sku,
-    total_transactions::numeric / NULLIF(total_sku, 0) AS transactions_per_sku,
-
+    total_transactions::numeric / NULL IF(total_sku, 0) AS transactions_per_sku,
     avg_discount
 FROM baseline;
 
@@ -801,8 +797,7 @@ SELECT
     ROUND(discount_percentage * 100, 0) AS discount_pct,
     COUNT(DISTINCT transaction_id) AS total_transactions,
     SUM(net_sales) AS net_sales,
-    SUM(net_sales) / COUNT(DISTINCT transaction_id)
-        AS avg_sales_per_transaction
+    SUM(net_sales) / COUNT(DISTINCT transaction_id) AS avg_sales_per_transaction
 FROM portofolio_1.vw_transaction_enriched
 GROUP BY ROUND(discount_percentage * 100, 0)
 ORDER BY discount_pct;
@@ -861,7 +856,7 @@ SELECT
     COUNT(*) AS unique_branch_product_pairs,
     COUNT(*) FILTER (WHERE observation_count = 1) AS single_record_pairs,
     COUNT(*) FILTER (WHERE observation_count > 1) AS repeated_pairs,
-    ROUND(100.0 * COUNT(*) FILTER (WHERE observation_count > 1)/ NULLIF(COUNT(*),0),2) AS repeated_pair_pct,
+    ROUND(100.0 * COUNT(*) FILTER (WHERE observation_count > 1)/ NULL IF(COUNT(*),0),2) AS repeated_pair_pct,
     AVG(observation_count::numeric) AS avg_observations_per_pair,
     MAX(observation_count) AS max_observations_per_pair
 FROM pair_counts;
@@ -906,11 +901,8 @@ GROUP BY branch_id, product_id
 ORDER BY observation_count DESC, branch_id, product_id
 LIMIT 50;
 
--- verify wh---------------------------------------------------------------------------
--- E. VERIFY WHETHER A TEMPORAL FIELD EXISTS
--- Expected project result: no usable timestamp/date column.
--- ---------------------------------------------------------------------------
-
+-- verify whether a temporal field exists
+---- Expected project result: no usable timestamp/date column.
 SELECT
     column_name,
     data_type
