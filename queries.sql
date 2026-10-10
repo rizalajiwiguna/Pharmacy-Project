@@ -408,7 +408,7 @@ SELECT
     SUM(net_sales) AS total_net_sales
 FROM portofolio_1.vw_transaction_enriched;
 
--- bigquery analytical view 
+-- create bigquery analytical view 
 CREATE OR REPLACE VIEW
   `pharmapoint-portfolio.pharmapoint.vw_sales_enriched` AS
 SELECT
@@ -470,7 +470,7 @@ SELECT
     net_sales / NULLIF(total_branches, 0) AS net_sales_per_branch,
     total_transactions::numeric / NULLIF(total_branches, 0) AS transactions_per_branch,
     net_sales / NULLIF(total_sku, 0) AS net_sales_per_sku,
-    total_transactions::numeric / NULL IF(total_sku, 0) AS transactions_per_sku,
+    total_transactions::numeric / NULLIF(total_sku, 0) AS transactions_per_sku,
     avg_discount
 FROM baseline;
 
@@ -856,7 +856,7 @@ SELECT
     COUNT(*) AS unique_branch_product_pairs,
     COUNT(*) FILTER (WHERE observation_count = 1) AS single_record_pairs,
     COUNT(*) FILTER (WHERE observation_count > 1) AS repeated_pairs,
-    ROUND(100.0 * COUNT(*) FILTER (WHERE observation_count > 1)/ NULL IF(COUNT(*),0),2) AS repeated_pair_pct,
+    ROUND(100.0 * COUNT(*) FILTER (WHERE observation_count > 1)/ NULLIF(COUNT(*),0),2) AS repeated_pair_pct,
     AVG(observation_count::numeric) AS avg_observations_per_pair,
     MAX(observation_count) AS max_observations_per_pair
 FROM pair_counts;
@@ -918,33 +918,12 @@ WHERE table_schema = 'portofolio_1'
   )
 ORDER BY ordinal_position;
 
--- why current stoct cannot be derived?
-/*
-A typical "latest stock" query would need logic such as:
-*/
-SELECT DISTINCT ON (branch_id, product_id)
-    branch_id,
-    product_id,
-    opname_stock
-FROM portofolio_1.inventory
-ORDER BY branch_id, product_id, snapshot_datetime DESC;
 /*
 The current dataset has no snapshot_datetime field, so this logic cannot be
 implemented defensibly.
-*/
-
-/*
 -- recommended future inventory grain 
 ----- 1 row = branch + product + snapshot datetime
 */
-
-CREATE TABLE future_inventory (
-    branch_id           INTEGER NOT NULL,
-    product_id          VARCHAR(20) NOT NULL,
-    snapshot_datetime   TIMESTAMP NOT NULL,
-    opname_stock        INTEGER NOT NULL,
-    PRIMARY KEY (branch_id, product_id, snapshot_datetime)
-);
 
 
 /*
