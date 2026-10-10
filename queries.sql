@@ -36,43 +36,49 @@ ANALYTICAL GUARDRAILS
 -------------------
 */
 --create schema
-CREATE SCHEMA IF NOT EXISTS portofolio_1;
+CREATE SCHEMA portofolio_1;
 SET search_path TO portofolio_1, public;
 
 --create table
-CREATE TABLE IF NOT EXISTS portofolio_1.product (
-    product_id          VARCHAR(20) PRIMARY KEY,
-    product_name        TEXT NOT NULL,
-    product_category    VARCHAR(20),
-    price               INTEGER
-);
-CREATE TABLE IF NOT EXISTS portofolio_1.inventory (
-    inventory_id        VARCHAR(20) PRIMARY KEY,
-    branch_id           INTEGER,
-    product_id          VARCHAR(20),
-    product_name        TEXT,
-    opname_stock        INTEGER
-);
-CREATE TABLE IF NOT EXISTS portofolio_1.kantor_cabang (
-    branch_id           INTEGER PRIMARY KEY,
-    branch_category     VARCHAR(50),
-    branch_name         VARCHAR(50),
-    kota                VARCHAR(20),
-    provinsi            VARCHAR(20),
-    rating              NUMERIC(2,1) CHECK (rating BETWEEN 0 AND 5)
-);
-CREATE TABLE IF NOT EXISTS portofolio_1.final_transaction (
-    transaction_id      VARCHAR(20) PRIMARY KEY,
-    date                DATE,
-    branch_id           INTEGER,
-    customer_name       VARCHAR(50),
-    product_id          VARCHAR(20),
-    price               INTEGER,
-    discount_percentage NUMERIC(3,2),
-    rating              NUMERIC(2,1) CHECK (rating BETWEEN 0 AND 5)
+CREATE TABLE Portofolio_1.product (
+	product_id VARCHAR (20) PRIMARY KEY,
+	product_name TEXT NOT NULL,
+	product_category VARCHAR (20),
+	price INTEGER
 );
 
---verifi import dataset
+---tabel inventory:
+CREATE TABLE Portofolio_1.inventory (
+	inventory_ID VARCHAR (20) PRIMARY KEY,
+	branch_id INTEGER,
+	product_id VARCHAR (20),
+	product_name TEXT,
+	opname_stock INTEGER
+);
+
+---tabel kantor_cabang:
+CREATE TABLE Portofolio_1.kantor_cabang (
+	branch_id INTEGER PRIMARY KEY,
+	branch_category VARCHAR(50),
+	branch_name VARCHAR(50),
+	kota VARCHAR(20),
+	provinsi VARCHAR(20),
+	rating NUMERIC (2,1) CHECK (rating BETWEEN 0 AND 5)
+);
+
+---tabel final_transaction:
+CREATE TABLE Portofolio_1.final_transaction (
+	transaction_id VARCHAR (20) PRIMARY KEY,
+	date DATE,
+	branch_id INTEGER,
+	customer_name VARCHAR (50),
+	product_id VARCHAR (20),
+	price INTEGER,
+	discount_percentage NUMERIC (3,2),
+	rating NUMERIC (2,1) CHECK (rating BETWEEN 0 AND 5)
+);
+
+--verify import dataset
 SELECT
     table_schema,
     table_name
@@ -101,6 +107,31 @@ WHERE table_schema = 'portofolio_1'
   )
 ORDER BY table_name, ordinal_position;
 
+--verify column
+SELECT COUNT(*) AS jumlah_kolom
+FROM information_schema.columns
+WHERE 
+    TABLE_SCHEMA = 'portofolio_1'
+    AND TABLE_NAME = 'final_transaction';
+	
+SELECT COUNT(*) AS jumlah_kolom
+FROM information_schema.columns
+WHERE
+	table_schema = 'portofolio_1'
+	AND TABLE_NAME = 'kantor_cabang';
+
+SELECT COUNT(*) AS jumlah_kolom
+FROM information_schema.columns
+WHERE
+	table_schema = 'portofolio_1'
+	AND TABLE_NAME = 'product';
+
+SELECT COUNT(*) AS jumlah_kolom
+FROM information_schema.columns
+WHERE
+	table_schema = 'portofolio_1'
+	AND TABLE_NAME = 'inventory';
+
 --verify rows
 SELECT 'product' AS table_name, COUNT(*) AS row_count
 FROM portofolio_1.product
@@ -114,7 +145,6 @@ UNION ALL
 SELECT 'inventory', COUNT(*)
 FROM portofolio_1.inventory
 ORDER BY table_name;
-
 
 /*
 02. DATA UNDERSTANDING
@@ -221,21 +251,37 @@ SELECT
     COUNT(*) FILTER (WHERE opname_stock IS NULL) AS null_stock
 FROM portofolio_1.inventory;
 
--- identifier unique
+-- identifier unique value
+--table product
+SELECT COUNT(DISTINCT product_id) AS id_unik
+FROM portofolio_1.product;
+
 SELECT product_id, COUNT(*) AS row_count
 FROM portofolio_1.product
 GROUP BY product_id
 HAVING COUNT(*) > 1;
+
+--table kantor_cabang
+SELECT COUNT(DISTINCT branch_id) AS id_unik
+FROM portofolio_1.kantor_cabang;
 
 SELECT branch_id, COUNT(*) AS row_count
 FROM portofolio_1.kantor_cabang
 GROUP BY branch_id
 HAVING COUNT(*) > 1;
 
+--table final_transaction
+SELECT COUNT(DISTINCT transaction_id) AS id_unik
+FROM portofolio_1.final_transaction;
+
 SELECT transaction_id, COUNT(*) AS row_count
 FROM portofolio_1.final_transaction
 GROUP BY transaction_id
 HAVING COUNT(*) > 1;
+
+--table inventory
+SELECT COUNT(DISTINCT inventory_id) AS id_unik
+FROM portofolio_1.inventory;
 
 SELECT inventory_id, COUNT(*) AS row_count
 FROM portofolio_1.inventory
@@ -311,7 +357,6 @@ SELECT COUNT(*) AS negative_inventory_stock
 FROM portofolio_1.inventory
 WHERE opname_stock < 0;
 
-
 -- exact inventory row duplicate 
 SELECT
     branch_id,
@@ -323,7 +368,6 @@ FROM portofolio_1.inventory
 GROUP BY branch_id, product_id, product_name, opname_stock
 HAVING COUNT(*) > 1
 ORDER BY exact_row_count DESC;
-
 
 /*
 04. DATA PREPARATION & ANALYTICAL VIEW
