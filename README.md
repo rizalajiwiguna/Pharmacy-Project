@@ -522,6 +522,9 @@ Product reporting should separate:
 ---
 
 ## Finding 5 — Product Revenue Is Almost Perfectly Explained by Price
+<p align="center">
+  <img src="images/product_price_revenue.png" width="700">
+</p>
 
 ### Evidence
 
