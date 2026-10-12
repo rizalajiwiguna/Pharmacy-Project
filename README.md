@@ -345,6 +345,9 @@ These normalized metrics are used as internal benchmarks throughout the analysis
 # 6. Key Findings
 
 ## Finding 1 — Sales Stayed Flat for Four Years: Time Is Not the Main Performance Driver
+<p align="center">
+  <img src="images/monthly_sales_trend.png" width="850">
+</p>
 
 ### Evidence
 
@@ -387,6 +390,9 @@ Management attention is better directed toward:
 ---
 
 ## Finding 2 — High-Revenue Regions Are Larger, Not Meaningfully More Productive
+<p align="center">
+  <img src="images/province_net_sales.png" width="850">
+</p>
 
 ### Evidence
 
@@ -418,6 +424,9 @@ Regional reporting should always separate absolute scale from normalized product
 ---
 
 ## Finding 3 — Regional Productivity Differs by Only a Few Percent
+<p align="center">
+  <img src="images/province_productivity_gap.png" width="850">
+</p>
 
 ### Evidence
 
@@ -470,6 +479,9 @@ rather than ranking alone.
 ---
 
 ## Finding 4 — Category Revenue Is Driven by Assortment Size and Price Mix, Not Higher Transaction Frequency
+<p align="center">
+  <img src="images/category_performance.jpg" width="850">
+</p>
 
 ### Evidence
 
@@ -556,6 +568,9 @@ because quantity sold is unavailable and transaction counts are nearly uniform.
 ---
 
 ## Finding 6 — Higher Discounts and Better Ratings Do Not Explain Better Sales Performance
+<p align="center">
+  <img src="images/commercial_signals.png" width="850">
+</p>
 
 ### Discount Evidence
 
@@ -685,13 +700,15 @@ These filters dynamically update the KPI cards and relevant charts.
 
 > Replace the relative path below with the final exported dashboard screenshot.
 
-![PharmaPoint Dashboard](images/dashboard.png)
+<p align="center">
+  <img src="images/dashboard.png" width="900">
+</p>
 
 ## 7.4 Interactive Dashboard Link
 
 > Replace the placeholder below with the final public Looker Studio URL.
 
-[**Open Interactive PharmaPoint Dashboard**](PASTE_LOOKER_STUDIO_LINK_HERE)
+🔗 **[View Interactive Dashboard on Looker Studio](https://datastudio.google.com/reporting/26553675-e866-47cc-8025-376b317c85aa)**
 
 ---
 
@@ -978,18 +995,6 @@ The inventory dataset cannot reliably support stock-performance decisions until 
 
 ## Final Takeaway
 > **Large does not necessarily mean productive. High revenue does not necessarily mean high demand. Good analysis begins by normalizing scale, testing assumptions, and refusing to draw conclusions that the data cannot support.**
-
----
-
-# 12. Project Artifacts
-### Interactive Dashboard
-[Looker Studio Dashboard]((https://datastudio.google.com/reporting/26553675-e866-47cc-8025-376b317c85aa))
-
-### Case Study Presentation
-[PharmaPoint Case Study Presentation](presentation/PharmaPoint_Case_Study_Presentation.pptx)
-
-### SQL Analysis
-[SQL Queries](sql/)
 
 ---
 
