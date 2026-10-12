@@ -2,36 +2,7 @@
 PHARMAPOINT — SALES PRODUCTIVITY & PERFORMANCE ANALYSIS
 Author  : Rizal Aji Wiguna
 Purpose : End-to-end SQL analysis for the PharmaPoint portfolio project.
-Primary SQL engine: PostgreSQL  
-Secondary platform: BigQuery (analytical-view replication)  
-
-MAIN ANALYTICAL QUESTION
-How can PharmaPoint distinguish business scale from true performance across
-time, regions, products, and commercial indicators?
-
-TABLE OF CONTENTS
-01. Database Setup
-02. Data Understanding
-03. Data Quality Validation
-04. Data Preparation & Analytical View
-05. Metric Definition & Company Baseline
-06. Sales Trend Analysis
-07. Geographic Performance Analysis
-08. Product Performance Analysis
-09. Commercial Analysis
-10. Inventory Reliability Analysis
-
-ANALYTICAL GUARDRAILS
-- One transaction row is not interpreted as quantity sold.
-- customer_name is not treated as a stable customer ID.
-- Gross-to-net difference is not labeled as lost revenue.
-- Correlation is not interpreted as causation.
-- Repeated inventory branch-product observations are not automatically called
-  duplicates.
-- Inventory is excluded from the sales analytical layer because no timestamp
-  exists to establish observation chronology.
 */
-
 
 /*
 01. DATABASE SETUP
