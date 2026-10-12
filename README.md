@@ -18,8 +18,6 @@
 9. [Limitations & Methodology Notes](#9-limitations--methodology-notes)
 10. [Repository Structure](#10-repository-structure)
 11. [Conclusion](#11-conclusion)
-12. [Project Artifacts](#12-project-artifacts)
-
 ---
 
 # 1. Business Understanding
