@@ -41,6 +41,9 @@ ANALYTICAL GUARDRAILS
 CREATE SCHEMA portofolio_1;
 SET search_path TO portofolio_1, public;
 
+-- source transaction dates use MM/DD/YYYY format
+SET datestyle = 'ISO, MDY';
+
 --create table
 CREATE TABLE Portofolio_1.product (
 	product_id VARCHAR (20) PRIMARY KEY,
@@ -359,17 +362,24 @@ SELECT COUNT(*) AS negative_inventory_stock
 FROM portofolio_1.inventory
 WHERE opname_stock < 0;
 
--- exact inventory row duplicate 
+-- repeated identical stock-state observations
+-- These are not automatically treated as duplicates because inventory_id
+-- remains unique and no timestamp exists to establish chronology
 SELECT
     branch_id,
     product_id,
     product_name,
     opname_stock,
-    COUNT(*) AS exact_row_count
+    COUNT(*) AS observation_count
 FROM portofolio_1.inventory
-GROUP BY branch_id, product_id, product_name, opname_stock
+GROUP BY
+    branch_id,
+    product_id,
+    product_name,
+    opname_stock
 HAVING COUNT(*) > 1
-ORDER BY exact_row_count DESC;
+ORDER BY observation_count DESC;
+
 
 /*
 04. DATA PREPARATION & ANALYTICAL VIEW
@@ -543,6 +553,18 @@ FROM portofolio_1.vw_transaction_enriched
 GROUP BY 1
 ORDER BY 1;
 
+-- monthly sales normalized by active days
+SELECT
+    DATE_TRUNC('month', transaction_date)::date AS month,
+    COUNT(DISTINCT transaction_date) AS active_days,
+    SUM(net_sales) AS net_sales,
+    COUNT(DISTINCT transaction_id) AS total_transactions,
+    SUM(net_sales)/ NULLIF(COUNT(DISTINCT transaction_date), 0) AS avg_net_sales_per_active_day,
+    COUNT(DISTINCT transaction_id)::numeric / NULLIF(COUNT(DISTINCT transaction_date), 0) AS avg_transactions_per_active_day
+FROM portofolio_1.vw_transaction_enriched
+GROUP BY 1
+ORDER BY 1;
+
 
 /*
 07. GEOGRAPHIC PERFORMANCE ANALYSIS
@@ -705,6 +727,21 @@ WITH product_performance AS (
 SELECT *
 FROM product_performance
 ORDER BY net_sales DESC;
+
+-- category transaction-value range
+WITH category_performance AS (
+    SELECT
+        product_category,
+        SUM(net_sales)
+            / COUNT(DISTINCT transaction_id)
+            AS avg_sales_per_transaction
+    FROM portofolio_1.vw_transaction_enriched
+    GROUP BY product_category
+)
+SELECT
+    MIN(avg_sales_per_transaction) AS min_avg_sales_per_transaction,
+    MAX(avg_sales_per_transaction) AS max_avg_sales_per_transaction
+FROM category_performance;
 
 -- product transaction frequency
 WITH product_performance AS (
@@ -926,7 +963,6 @@ implemented defensibly.
 -- recommended future inventory grain 
 ----- 1 row = branch + product + snapshot datetime
 */
-
 
 /*
 Once snapshot_datetime is available, latest stock, stock movement, stock
